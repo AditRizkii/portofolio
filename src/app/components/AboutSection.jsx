@@ -13,6 +13,7 @@ const TAB_DATA = [
       <ul className="list-disc pl-2">
         <li>Node.js</li>
         <li>MySQL</li>
+        <li>MongoDB</li>
         <li>JavaScript</li>
         <li>ReactJS</li>
         <li>NextJS</li>
@@ -39,6 +40,15 @@ const TAB_DATA = [
           Getting Started with Basic Programming to Become a Software Developer
         </li>
         <li>Learn to Make Android Apps for Beginners</li>
+        <li>Learn Structured Query Language (SQL)</li>
+        <li>Learn Programming with Haskell</li>
+        <li>Learn Python</li>
+        <li>Learn Machine Learning for Beginners</li>
+        <li>Learn Programming with Kotlin</li>
+        <li>Learn SOLID Principal</li>
+        <li>Learn Fundamental Android</li>
+        <li>Learn Intermediate Android</li>
+        <li>Learn Machine Learning for Android</li>
       </ul>
     ),
   },
