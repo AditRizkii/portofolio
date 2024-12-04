@@ -124,7 +124,7 @@ const ProjectsSection = () => {
 
   // Scroll ke atas saat currentPage berubah
   useEffect(() => {
-    if (ref.current) {
+    if (ref.current && currentPage > 1) {
       const offset = -150;
       const y =
         ref.current.getBoundingClientRect().top + window.scrollY + offset;
