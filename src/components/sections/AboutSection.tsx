@@ -29,7 +29,7 @@ const skills = [
     group: "Frontend",
   },
   { name: "HTML5", icon: "html5", color: "#E34F26", group: "Frontend" },
-  { name: "CSS3", icon: "css3", color: "#1572B6", group: "Frontend" },
+  { name: "CSS3", icon: "css", color: "#1572B6", group: "Frontend" },
   { name: "Node.js", icon: "nodedotjs", color: "#339933", group: "Backend" },
   { name: "Express", icon: "express", color: "#FFFFFF", group: "Backend" },
   { name: "MySQL", icon: "mysql", color: "#4479A1", group: "Database" },
@@ -215,11 +215,11 @@ export function AboutSection() {
                     style={{
                       background: "rgb(var(--accent-dim))",
                       border: "1px solid rgb(var(--accent) / 0.2)",
-                      color: "rgb(var(--accent))",
+                      color: "rgb(var(--text-1))",
                     }}
                   >
                     <img
-                      src={`https://cdn.simpleicons.org/${s.toLowerCase() === "node.js" ? "nodedotjs" : s.toLowerCase() === "figma" ? "figma" : "react"}/7B6FE0`}
+                      src={`https://cdn.simpleicons.org/${s.toLowerCase() === "node.js" ? "nodedotjs" : s.toLowerCase() === "figma" ? "figma" : "react"}`}
                       alt=""
                       width="12"
                       height="12"

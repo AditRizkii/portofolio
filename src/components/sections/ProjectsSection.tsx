@@ -12,7 +12,7 @@ const projectsData: Project[] = [
   {
     id: 1,
     title: "DESUS",
-    description: "Depression Diagnose — mental health screening app",
+    description: "Depression Diagnose",
     image: "/images/projects/desus.png",
     tags: ["All", "Web", "Mobile"],
     gitUrl: "https://github.com/AditRizkii/DESUS",
@@ -22,7 +22,7 @@ const projectsData: Project[] = [
   {
     id: 2,
     title: "Manajemen Uang Kas",
-    description: "Cash management system for organizations",
+    description: "Website for management kas",
     image: "/images/projects/uang-kas.png",
     tags: ["All", "Web"],
     gitUrl: "https://github.com/AditRizkii/ManajemenKas-fe",
@@ -32,7 +32,7 @@ const projectsData: Project[] = [
   {
     id: 3,
     title: "Flow Pet Clinic",
-    description: "Landing page for pet care services",
+    description: "Build Landing page for pet care",
     image: "/images/projects/petcare.png",
     tags: ["All", "Web", "Mobile"],
     gitUrl: "/",
@@ -42,7 +42,7 @@ const projectsData: Project[] = [
   {
     id: 4,
     title: "KreditTepat",
-    description: "Credit card eligibility analysis platform",
+    description: "Website for analysis worthy for credit card",
     image: "/images/projects/kredittepat.png",
     tags: ["All", "Web", "Mobile"],
     gitUrl: "https://github.com/AditRizkii/Sistem-KreditTepat",
@@ -52,7 +52,7 @@ const projectsData: Project[] = [
   {
     id: 5,
     title: "TrashPorter",
-    description: "Trash pickup service platform",
+    description: "Trash Pickup Service",
     image: "/images/projects/trashporter.png",
     tags: ["All", "Web"],
     gitUrl: "/",
@@ -61,8 +61,8 @@ const projectsData: Project[] = [
   },
   {
     id: 6,
-    title: "Wedding Invitation",
-    description: "Digital wedding invitation website",
+    title: "Wedding Invitation Web",
+    description: "Build wedding invitation website",
     image: "/images/projects/undangan.png",
     tags: ["All", "Web", "Mobile"],
     gitUrl: "/",
@@ -71,8 +71,8 @@ const projectsData: Project[] = [
   },
   {
     id: 7,
-    title: "Fixing Report",
-    description: "PDF report template for government instances",
+    title: "Fixing Report Web",
+    description: "Build report template pdf for goverment instance",
     image: "/images/projects/laporanperbaikan.png",
     tags: ["All", "Web", "Mobile"],
     gitUrl: "https://github.com/AditRizkii/Laporan-Perbaikan",
@@ -82,7 +82,7 @@ const projectsData: Project[] = [
   {
     id: 8,
     title: "EZFarm App",
-    description: "Plant disease detection Android app",
+    description: "Build plant disease detection android app",
     image: "/images/projects/ezfarm.png",
     tags: ["All", "Mobile"],
     gitUrl: "https://github.com/fakhri-rasyad/capstone_project_ezfarm",
@@ -94,16 +94,17 @@ const projectsData: Project[] = [
 const filterTags = ["All", "Web", "Mobile"] as const;
 
 export function ProjectsSection() {
-  const [activeTag, setActiveTag] = useState<string>("All");
+  const [activeTag, setActiveTag] = useState<"All" | "Web" | "Mobile">("All");
   const gridRef = useRef<HTMLDivElement>(null!);
   const sectionRef = useRef<HTMLElement>(null!);
 
   const filteredProjects = projectsData.filter((p) =>
-    p.tags.includes(activeTag as Project["tags"][number])
+    p.tags.includes(activeTag),
   );
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!gridRef.current || !gridRef.current.children.length) return;
 
     const ctx = gsap.context(() => {
       gsap.from(gridRef.current.children, {
@@ -111,17 +112,34 @@ export function ProjectsSection() {
           trigger: gridRef.current,
           start: "top 85%",
           toggleActions: "play none none none",
+          // markers: true, // aktifkan kalau mau debug visual posisi trigger
         },
         y: 50,
         opacity: 0,
         duration: 0.6,
         stagger: 0.08,
         ease: "power2.out",
+        onComplete: () => {
+          // safety net: pastikan akhirnya selalu opacity 1, apapun yang terjadi
+          gsap.set(gridRef.current.children, {
+            opacity: 1,
+            y: 0,
+            clearProps: "transform",
+          });
+        },
       });
     }, gridRef);
 
-    return () => ctx.revert();
-  }, [activeTag]);
+    // recalculate posisi trigger setelah layout & gambar settle
+    const raf = requestAnimationFrame(() => ScrollTrigger.refresh());
+    const t = setTimeout(() => ScrollTrigger.refresh(), 500);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t);
+      ctx.revert();
+    };
+  }, [activeTag, filteredProjects]);
 
   return (
     <section ref={sectionRef} id="projects" className="py-20 sm:py-28">
@@ -182,7 +200,10 @@ export function ProjectsSection() {
         </div>
 
         {filteredProjects.length === 0 && (
-          <p className="mt-16 text-center text-sm" style={{ color: "rgb(var(--text-2))" }}>
+          <p
+            className="mt-16 text-center text-sm"
+            style={{ color: "rgb(var(--text-2))" }}
+          >
             No projects found for this category.
           </p>
         )}
