@@ -93,7 +93,11 @@ const projectsData: Project[] = [
 
 const filterTags = ["All", "Web", "Mobile"] as const;
 
-export function ProjectsSection() {
+interface ProjectsSectionProps {
+  onProjectClick?: (project: Project) => void;
+}
+
+export function ProjectsSection({ onProjectClick }: ProjectsSectionProps) {
   const [activeTag, setActiveTag] = useState<"All" | "Web" | "Mobile">("All");
   const gridRef = useRef<HTMLDivElement>(null!);
   const sectionRef = useRef<HTMLElement>(null!);
@@ -195,7 +199,7 @@ export function ProjectsSection() {
           className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {filteredProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <ProjectCard key={project.id} project={project} onClick={() => onProjectClick?.(project)} />
           ))}
         </div>
 

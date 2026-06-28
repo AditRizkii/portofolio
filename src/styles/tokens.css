@@ -14,3 +14,20 @@
   --border: 255 255 255;
   --border-bright: 255 255 255;
 }
+
+.light {
+  --bg-base: 242 242 247;
+  --bg-layer: 250 250 255;
+  --bg-card: 255 255 255;
+  --bg-card-hover: 248 248 253;
+  --accent: 108 95 210;
+  --accent-dim: 108 95 210;
+  --accent-glow: 108 95 210;
+  --cyan: 2 136 209;
+  --cyan-dim: 2 136 209;
+  --text-1: 26 26 38;
+  --text-2: 102 102 128;
+  --text-3: 153 153 170;
+  --border: 0 0 0;
+  --border-bright: 0 0 0;
+}

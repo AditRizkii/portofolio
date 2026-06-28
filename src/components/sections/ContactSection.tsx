@@ -7,11 +7,8 @@ import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type FormStatus = "idle" | "sending" | "success" | "error";
-
 export function ContactSection() {
-  const [status, setStatus] = useState<FormStatus>("idle");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [sent, setSent] = useState(false);
   const sectionRef = useRef<HTMLElement>(null!);
 
   useEffect(() => {
@@ -34,36 +31,15 @@ export function ContactSection() {
     return () => ctx.revert();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("sending");
-
     const form = e.currentTarget;
-    const data = {
-      email: (form.elements.namedItem("email") as HTMLInputElement).value,
-      subject: (form.elements.namedItem("subject") as HTMLInputElement).value,
-      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
-    };
-
-    try {
-      const response = await fetch("/api/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        setStatus("success");
-        form.reset();
-      } else {
-        const err = await response.json();
-        setErrorMessage(err.error?.message || "Failed to send message");
-        setStatus("error");
-      }
-    } catch {
-      setErrorMessage("Network error. Please try again.");
-      setStatus("error");
-    }
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value;
+    const subject = (form.elements.namedItem("subject") as HTMLInputElement).value;
+    const message = (form.elements.namedItem("message") as HTMLTextAreaElement).value;
+    const mailto = `mailto:adityarizkiramadhan2@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${email}\n\n${message}`)}`;
+    window.location.href = mailto;
+    setSent(true);
   };
 
   return (
@@ -77,7 +53,6 @@ export function ContactSection() {
         </h2>
 
         <div className="mt-12 grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-20">
-          {/* Left */}
           <div className="space-y-6">
             <p className="text-base leading-relaxed" style={{ color: "rgb(var(--text-2))", lineHeight: "1.8" }}>
               I&apos;m currently looking for new opportunities. Whether you have
@@ -149,9 +124,8 @@ export function ContactSection() {
             </div>
           </div>
 
-          {/* Right: Form */}
           <div>
-            {status === "success" ? (
+            {sent ? (
               <div
                 className="rounded-xl p-8 text-center"
                 style={{
@@ -162,19 +136,19 @@ export function ContactSection() {
                 aria-live="polite"
               >
                 <p className="font-medium" style={{ color: "rgb(var(--accent))" }}>
-                  Message sent successfully!
+                  Your email client opened!
                 </p>
                 <p className="mt-2 text-sm" style={{ color: "rgb(var(--text-2))" }}>
-                  Thanks for reaching out — I&apos;ll get back to you soon.
+                  Thanks for reaching out &mdash; hit send and I&apos;ll get back to you soon.
                 </p>
                 <button
-                  onClick={() => setStatus("idle")}
+                  onClick={() => setSent(false)}
                   className="mt-4 text-sm font-medium transition-colors focus-ring"
                   style={{ color: "rgb(var(--accent))" }}
                   onMouseEnter={(e) => { e.currentTarget.style.textDecoration = "underline"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.textDecoration = "none"; }}
                 >
-                  Send another message
+                  Compose another
                 </button>
               </div>
             ) : (
@@ -193,7 +167,6 @@ export function ContactSection() {
                     type="email"
                     required
                     placeholder="adit@example.com"
-                    disabled={status === "sending"}
                     className="input-underline"
                   />
                 </div>
@@ -212,7 +185,6 @@ export function ContactSection() {
                     type="text"
                     required
                     placeholder="Just saying hi"
-                    disabled={status === "sending"}
                     className="input-underline"
                   />
                 </div>
@@ -231,44 +203,25 @@ export function ContactSection() {
                     rows={3}
                     required
                     placeholder="Let&apos;s talk about..."
-                    disabled={status === "sending"}
                     className="input-underline resize-none"
                   />
                 </div>
 
-                {status === "error" && (
-                  <p className="text-sm text-red-500" role="alert">
-                    {errorMessage}
-                  </p>
-                )}
-
                 <button
                   type="submit"
-                  disabled={status === "sending"}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50 focus-ring"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 hover:scale-[1.02] focus-ring"
                   style={{
                     background: "rgb(var(--accent))",
                     color: "#fff",
                   }}
                   onMouseEnter={(e) => {
-                    if (!e.currentTarget.disabled)
-                      e.currentTarget.style.boxShadow = "0 0 24px rgb(var(--accent-glow) / 0.5)";
+                    e.currentTarget.style.boxShadow = "0 0 24px rgb(var(--accent-glow) / 0.5)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.boxShadow = "none";
                   }}
                 >
-                  {status === "sending" ? (
-                    <>
-                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                      </svg>
-                      Sending...
-                    </>
-                  ) : (
-                    "Send Message"
-                  )}
+                  Send Message
                 </button>
               </form>
             )}

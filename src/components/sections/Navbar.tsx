@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { gsap } from "gsap";
+import { useTheme } from "@/hooks/useTheme";
 
 const navLinks = [
   { title: "About", path: "#about" },
@@ -17,6 +18,7 @@ export function Navbar() {
   const [hidden, setHidden] = useState(false);
   const navRef = useRef<HTMLElement>(null!);
   const lastScroll = useRef(0);
+  const { dark, toggle: toggleTheme } = useTheme();
 
   useEffect(() => {
     const prefersReduced = window.matchMedia(
@@ -76,6 +78,16 @@ export function Navbar() {
   }, [hidden]);
 
   useEffect(() => {
+    if (mobileOpen) {
+      gsap.fromTo(
+        ".mobile-menu",
+        { opacity: 0, y: -8 },
+        { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }
+      );
+    }
+  }, [mobileOpen]);
+
+  useEffect(() => {
     const sectionIds = ["about", "projects", "contact"];
     const observer = new IntersectionObserver(
       (entries) => {
@@ -108,7 +120,7 @@ export function Navbar() {
       ref={navRef}
       className="fixed top-0 left-0 right-0 z-50"
       style={{
-        background: "rgba(8,8,16,0.8)",
+        background: "rgb(var(--bg-base) / 0.8)",
         backdropFilter: "blur(20px) saturate(180%)",
         WebkitBackdropFilter: "blur(20px) saturate(180%)",
         borderBottom: "1px solid rgb(var(--border) / 0.06)",
@@ -130,7 +142,7 @@ export function Navbar() {
           Aditya Rizki
         </Link>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
           <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
@@ -147,21 +159,47 @@ export function Navbar() {
                 {link.title}
               </Link>
             ))}
-            <Link
-              href="#contact"
-              onClick={(e) => handleClick(e, "#contact")}
-              className="inline-flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-[1.02] focus-ring"
-              style={{
-                borderColor: "rgb(var(--accent) / 0.4)",
-                color: "rgb(var(--accent))",
-              }}
-            >
-              Let&apos;s Talk
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
-              </svg>
-            </Link>
           </div>
+
+          <button
+            onClick={toggleTheme}
+            className="flex h-8 w-8 items-center justify-center rounded-md transition-colors focus-ring"
+            style={{ color: "rgb(var(--text-2))" }}
+            aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {dark ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            )}
+          </button>
+
+          <Link
+            href="#contact"
+            onClick={(e) => handleClick(e, "#contact")}
+            className="hidden md:inline-flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-[1.02] focus-ring"
+            style={{
+              borderColor: "rgb(var(--accent) / 0.4)",
+              color: "rgb(var(--accent))",
+            }}
+          >
+            Let&apos;s Talk
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+            </svg>
+          </Link>
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -182,15 +220,13 @@ export function Navbar() {
       </nav>
 
       {mobileOpen && (
-        <div style={{ borderTop: "1px solid rgb(var(--border) / 0.06)", background: "rgb(var(--bg-base) / 0.98)" }}>
+        <div className="mobile-menu" style={{ borderTop: "1px solid rgb(var(--border) / 0.06)", background: "rgb(var(--bg-base) / 0.98)" }}>
           <ul className="flex flex-col px-6 py-4 md:hidden">
             {navLinks.map((link) => (
               <li key={link.path}>
                 <Link
                   href={link.path}
-                  onClick={(e) => {
-                    handleClick(e, link.path);
-                  }}
+                  onClick={(e) => { handleClick(e, link.path); }}
                   className={cn(
                     "nav-link block py-3 text-sm font-medium",
                     activeSection === link.path.slice(1)
@@ -202,21 +238,44 @@ export function Navbar() {
                 </Link>
               </li>
             ))}
-            <li className="pt-2">
-              <Link
-                href="#contact"
-                onClick={(e) => handleClick(e, "#contact")}
-                className="inline-flex items-center gap-1.5 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
-                style={{
-                  borderColor: "rgb(var(--accent) / 0.4)",
-                  color: "rgb(var(--accent))",
-                }}
-              >
-                Let&apos;s Talk
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
-                </svg>
-              </Link>
+            <li className="pt-2 border-t border-[rgb(var(--border)/0.06)] mt-2">
+              <div className="flex items-center gap-3 pt-2">
+                <button
+                  onClick={toggleTheme}
+                  className="flex h-8 w-8 items-center justify-center rounded-md transition-colors focus-ring"
+                  style={{ color: "rgb(var(--text-2))", border: "1px solid rgb(var(--border) / 0.1)" }}
+                  aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+                >
+                  {dark ? (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="5" />
+                      <line x1="12" y1="1" x2="12" y2="3" />
+                      <line x1="12" y1="21" x2="12" y2="23" />
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                      <line x1="1" y1="12" x2="3" y2="12" />
+                      <line x1="21" y1="12" x2="23" y2="12" />
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                  ) : (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                  )}
+                </button>
+                <Link
+                  href="#contact"
+                  onClick={(e) => handleClick(e, "#contact")}
+                  className="inline-flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm font-medium transition-colors focus-ring"
+                  style={{ borderColor: "rgb(var(--accent) / 0.4)", color: "rgb(var(--accent))" }}
+                >
+                  Let&apos;s Talk
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
             </li>
           </ul>
         </div>

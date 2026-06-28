@@ -1,0 +1,14 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#080810"/>
+  <rect x="0" y="0" width="1200" height="630" fill="url(#gradient)" opacity="0.3"/>
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7B6FE0"/>
+      <stop offset="100%" stop-color="#4FC3F7"/>
+    </linearGradient>
+  </defs>
+  <text x="80" y="280" font-family="system-ui, sans-serif" font-size="72" font-weight="800" fill="#EEEEF5">Aditya Rizki Ramadhan</text>
+  <text x="80" y="360" font-family="monospace" font-size="32" fill="#8E8EA8">Full Stack Developer &amp; Informatics Student</text>
+  <rect x="80" y="410" width="60" height="4" rx="2" fill="#7B6FE0"/>
+  <text x="80" y="470" font-family="monospace" font-size="22" fill="#555568">React · Next.js · Node.js · Kotlin</text>
+</svg>

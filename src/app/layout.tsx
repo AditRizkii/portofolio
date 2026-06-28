@@ -39,7 +39,7 @@ export const metadata: Metadata = {
       "UI/UX Designer & Full Stack Developer. Informatics student at Universitas Syiah Kuala.",
     url: "https://adityarizki.dev",
     siteName: "Aditya Rizki Ramadhan",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+    images: [{ url: "/og-image.svg", width: 1200, height: 630 }],
     locale: "en_US",
     type: "website",
   },
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     title: "Aditya Rizki Ramadhan",
     description:
       "UI/UX Designer & Full Stack Developer. Informatics student at Universitas Syiah Kuala.",
-    images: ["/og-image.jpg"],
+    images: ["/og-image.svg"],
   },
 };
 

@@ -5,12 +5,17 @@ import type { Project } from "@/types";
 
 interface ProjectCardProps {
   project: Project;
+  onClick?: () => void;
 }
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({ project, onClick }: ProjectCardProps) {
   return (
     <div
-      className="group relative overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-2"
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter") onClick?.(); }}
+      className="group relative overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
       style={{
         background: "rgb(var(--bg-card))",
         border: "1px solid rgb(var(--border) / 0.08)",

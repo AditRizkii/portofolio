@@ -15,7 +15,11 @@ const TYPING_SPEED = 80;
 const DELETING_SPEED = 40;
 const PAUSE = 2000;
 
-export function HeroSection() {
+interface HeroSectionProps {
+  onCvOpen?: () => void;
+}
+
+export function HeroSection({ onCvOpen }: HeroSectionProps) {
   const containerRef = useRef<HTMLElement>(null!);
   const eyebrowRef = useRef<HTMLDivElement>(null!);
   const helloRef = useRef<HTMLSpanElement>(null!);
@@ -210,9 +214,8 @@ export function HeroSection() {
               </svg>
               Hire Me
             </Link>
-            <Link
-              href="/cv/CV_AdityaRizkiRamadhan.pdf"
-              target="_blank"
+            <button
+              onClick={onCvOpen}
               className="inline-flex items-center gap-2 rounded-lg border px-7 py-3 text-sm font-medium transition-all duration-200 hover:scale-[1.03] active:scale-[0.98] focus-ring"
               style={{
                 borderColor: "rgb(var(--border-bright))",
@@ -239,8 +242,8 @@ export function HeroSection() {
                 <polyline points="7 10 12 15 17 10" />
                 <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
-              Download CV
-            </Link>
+              View CV
+            </button>
           </div>
 
           <div ref={socialRef} className="mt-8 flex items-center gap-4">

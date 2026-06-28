@@ -259,16 +259,35 @@ export function AboutSection() {
 
           {/* Right: Content */}
           <div ref={rightRef} className="lg:col-span-8">
-            <p
-              className="text-base leading-relaxed"
-              style={{ color: "rgb(var(--text-2))", lineHeight: "1.8" }}
-            >
-              I am a full stack web developer with a passion for creating
-              interactive and responsive web applications. I have experience
-              working with JavaScript, React, Node.js, MySQL, HTML, CSS, and
-              Git. I am a quick learner and always looking to expand my skill
-              set.
-            </p>
+            <div className="space-y-4">
+              <p
+                className="text-base leading-relaxed"
+                style={{ color: "rgb(var(--text-2))" }}
+              >
+                I&apos;m an informatics student at Universitas Syiah Kuala who
+                found my way into software through curiosity — tearing apart
+                websites to see how they worked, then rebuilding them better.
+                What started as tinkering turned into a genuine craft.
+              </p>
+              <p
+                className="text-base leading-relaxed"
+                style={{ color: "rgb(var(--text-2))" }}
+              >
+                I build full-stack applications with React, Next.js, and
+                Node.js, and I&apos;ve recently been diving into Kotlin for
+                Android development. I care about clean architecture, thoughtful
+                UX, and code that doesn&apos;t embarrass me six months later.
+              </p>
+              <p
+                className="text-base leading-relaxed"
+                style={{ color: "rgb(var(--text-2))" }}
+              >
+                Outside of coding, I&apos;m into UI/UX design, machine learning,
+                and finding better ways to explain complex things simply.
+                I&apos;m always learning — currently exploring cloud
+                infrastructure and system design.
+              </p>
+            </div>
 
             {/* Tabs */}
             <div
