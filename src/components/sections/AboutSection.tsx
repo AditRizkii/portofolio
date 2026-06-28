@@ -11,15 +11,15 @@ const skills = [
   { name: "React", icon: "react", color: "#61DAFB", group: "Frontend" },
   { name: "Next.js", icon: "nextdotjs", color: "#FFFFFF", group: "Frontend" },
   {
-    name: "JavaScript",
-    icon: "javascript",
-    color: "#F7DF1E",
-    group: "Frontend",
-  },
-  {
     name: "TypeScript",
     icon: "typescript",
     color: "#3178C6",
+    group: "Frontend",
+  },
+  {
+    name: "JavaScript",
+    icon: "javascript",
+    color: "#F7DF1E",
     group: "Frontend",
   },
   {
@@ -68,45 +68,6 @@ const certs = [
   "Learn Machine Learning for Android",
 ];
 
-interface SkillCardProps {
-  name: string;
-  icon: string;
-  color: string;
-}
-
-function SkillCard({ name, icon, color }: SkillCardProps) {
-  return (
-    <div
-      className="skill-card group"
-      style={
-        {
-          "--hover-color": color,
-        } as React.CSSProperties
-      }
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = color;
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = "";
-      }}
-    >
-      <img
-        src={`https://cdn.simpleicons.org/${icon}/${color.slice(1)}`}
-        alt={name}
-        width="32"
-        height="32"
-        loading="lazy"
-      />
-      <span
-        className="text-xs font-medium text-center leading-tight"
-        style={{ color: "rgb(var(--text-2))" }}
-      >
-        {name}
-      </span>
-    </div>
-  );
-}
-
 export function AboutSection() {
   const [activeTab, setActiveTab] = useState("skills");
   const sectionRef = useRef<HTMLElement>(null!);
@@ -146,14 +107,46 @@ export function AboutSection() {
   }, []);
 
   useEffect(() => {
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     const ctx = gsap.context(() => {
       gsap.from(tabContentRef.current, {
         opacity: 0,
         y: 10,
         duration: 0.3,
         ease: "power2.out",
+        onComplete: () => {
+          gsap.set(tabContentRef.current, {
+            opacity: 1,
+            y: 0,
+            clearProps: "transform",
+          });
+        },
       });
+
+      if (activeTab === "skills" && !prefersReduced) {
+        const cards = tabContentRef.current.querySelectorAll(".skill-chip");
+        if (cards.length) {
+          gsap.from(cards, {
+            scale: 0.85,
+            opacity: 0,
+            duration: 0.35,
+            stagger: 0.04,
+            ease: "back.out(1.5)",
+            onComplete: () => {
+              gsap.set(cards, {
+                opacity: 1,
+                scale: 1,
+                clearProps: "transform",
+              });
+            },
+          });
+        }
+      }
     }, tabContentRef);
+
     return () => ctx.revert();
   }, [activeTab]);
 
@@ -358,20 +351,61 @@ export function AboutSection() {
             {/* Tab Content */}
             <div ref={tabContentRef} className="mt-6 min-h-[200px]">
               {activeTab === "skills" && (
-                <div className="space-y-8">
+                <div className="space-y-7">
                   {groups.map((group) => {
                     const gSkills = skills.filter((s) => s.group === group);
                     return (
                       <div key={group}>
-                        <p
-                          className="mb-3 text-[10px] font-bold uppercase tracking-[0.15em]"
-                          style={{ color: "rgb(var(--text-3))" }}
-                        >
-                          {group}
-                        </p>
-                        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-2.5">
+                        <div className="mb-3 flex items-center gap-3">
+                          <p
+                            className="text-[10px] font-bold uppercase tracking-[0.15em]"
+                            style={{ color: "rgb(var(--text-3))" }}
+                          >
+                            {group}
+                          </p>
+                          <div
+                            className="flex-1 h-px"
+                            style={{
+                              background:
+                                "linear-gradient(90deg, rgb(var(--border) / 0.1), transparent)",
+                            }}
+                          />
+                        </div>
+                        <div className="flex flex-wrap gap-2">
                           {gSkills.map((s) => (
-                            <SkillCard key={s.name} {...s} />
+                            <span
+                              key={s.name}
+                              className="skill-chip inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 hover:scale-[1.02] cursor-default"
+                              style={{
+                                background: "rgb(var(--bg-card))",
+                                border: "1px solid rgb(var(--border) / 0.08)",
+                                color: "rgb(var(--text-1))",
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.borderColor = s.color;
+                                e.currentTarget.style.background =
+                                  "rgb(var(--bg-card-hover))";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.borderColor =
+                                  "rgb(var(--border) / 0.08)";
+                                e.currentTarget.style.background =
+                                  "rgb(var(--bg-card))";
+                              }}
+                            >
+                              <img
+                                src={`https://cdn.simpleicons.org/${s.icon}/${s.color.slice(1)}`}
+                                alt={s.name}
+                                width="16"
+                                height="16"
+                                className="shrink-0"
+                                loading="lazy"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = "none";
+                                }}
+                              />
+                              {s.name}
+                            </span>
                           ))}
                         </div>
                       </div>
