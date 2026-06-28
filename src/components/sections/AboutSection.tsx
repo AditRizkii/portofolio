@@ -45,7 +45,7 @@ const educationData = [
   {
     school: "University of Syiah Kuala",
     major: "Informatics",
-    period: "2022 — Present",
+    period: "2021 — 2025",
   },
   {
     school: "BANGKIT 2024 Batch 6",
@@ -168,91 +168,129 @@ export function AboutSection() {
         </h2>
 
         <div className="mt-12 grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-16">
-          {/* Left: Personal Card */}
+          {/* Left: ID Card (Vertical) */}
           <div ref={leftRef} className="lg:col-span-4">
             <div
-              className="rounded-2xl p-8"
+              className="relative overflow-hidden rounded-2xl text-center"
               style={{
                 background: "rgb(var(--bg-card))",
-                border: "1px solid rgb(var(--border-bright))",
+                border: "1px solid rgb(var(--border) / 0.1)",
                 boxShadow: "0 0 80px rgb(var(--accent-glow) / 0.08)",
               }}
             >
+              {/* Top accent bar */}
               <div
-                className="flex h-[120px] w-[120px] items-center justify-center rounded-2xl mx-auto lg:mx-0"
+                className="h-1.5 w-full"
                 style={{
                   background:
-                    "linear-gradient(135deg, rgb(var(--accent)), rgb(var(--cyan)))",
+                    "linear-gradient(90deg, rgb(var(--accent)), rgb(var(--cyan)))",
                 }}
-              >
-                <span className="font-display text-4xl font-extrabold text-white">
-                  AR
-                </span>
-              </div>
+              />
 
-              <h3
-                className="mt-5 font-display text-lg font-bold"
-                style={{ color: "rgb(var(--text-1))" }}
-              >
-                Aditya Rizki Ramadhan
-              </h3>
-              <p className="text-sm" style={{ color: "rgb(var(--text-2))" }}>
-                Full Stack Developer &amp; Backend Developer &amp; Frontend
-                Developer
-              </p>
-              <p
-                className="mt-0.5 text-xs italic"
-                style={{ color: "rgb(var(--text-3))" }}
-              >
-                Unsyiah · Informatics
-              </p>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {["React", "Node.js", "Figma"].map((s) => (
-                  <span
-                    key={s}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium"
-                    style={{
-                      background: "rgb(var(--accent-dim))",
-                      border: "1px solid rgb(var(--accent) / 0.2)",
-                      color: "rgb(var(--text-1))",
+              <div className="p-6 flex flex-col items-center">
+                {/* Photo */}
+                <div
+                  className="relative h-28 w-28 overflow-hidden rounded-xl -mt-1"
+                  style={{
+                    border: "2px solid rgb(var(--border) / 0.1)",
+                    background:
+                      "linear-gradient(135deg, rgb(var(--accent) / 0.2), rgb(var(--cyan) / 0.2))",
+                  }}
+                >
+                  <img
+                    src="/images/profile.jpg"
+                    alt="Aditya Rizki Ramadhan"
+                    className="h-full w-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                      const parent = e.currentTarget.parentElement;
+                      if (parent) {
+                        const fb = document.createElement("span");
+                        fb.className =
+                          "flex h-full w-full items-center justify-center font-display text-2xl font-extrabold";
+                        fb.style.color = "rgb(var(--accent))";
+                        fb.textContent = "AR";
+                        parent.appendChild(fb);
+                      }
                     }}
-                  >
-                    <img
-                      src={`https://cdn.simpleicons.org/${s.toLowerCase() === "node.js" ? "nodedotjs" : s.toLowerCase() === "figma" ? "figma" : "react"}`}
-                      alt=""
-                      width="12"
-                      height="12"
-                    />
-                    {s}
-                  </span>
-                ))}
-              </div>
+                  />
+                </div>
 
-              <div
-                className="mt-5 pt-5 flex items-center gap-3"
-                style={{ borderTop: "1px solid rgb(var(--border) / 0.06)" }}
-              >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                {/* Name & Title */}
+                <h3
+                  className="mt-4 font-display text-lg font-bold"
+                  style={{ color: "rgb(var(--text-1))" }}
+                >
+                  Aditya Rizki Ramadhan
+                </h3>
+                <p
+                  className="mt-0.5 text-xs font-medium"
+                  style={{ color: "rgb(var(--accent))" }}
+                >
+                  Full Stack Developer
+                </p>
+                <p
+                  className="mt-0.5 text-xs"
                   style={{ color: "rgb(var(--text-3))" }}
                 >
-                  <rect x="2" y="4" width="20" height="16" rx="2" />
-                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                </svg>
+                  Unsyiah · Informatics
+                </p>
+
+                {/* Divider */}
+                <div
+                  className="my-4 w-full"
+                  style={{ borderTop: "1px dashed rgb(var(--border) / 0.08)" }}
+                />
+
+                {/* Stack badges */}
+                <div className="flex flex-wrap justify-center gap-1.5">
+                  {["React", "Node.js", "Figma"].map((s) => (
+                    <span
+                      key={s}
+                      className="inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-medium"
+                      style={{
+                        background: "rgb(var(--accent) / 0.08)",
+                        color: "rgb(var(--accent))",
+                      }}
+                    >
+                      {s}
+                    </span>
+                  ))}
+                  <span
+                    className="inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-medium"
+                    style={{
+                      background: "rgb(var(--bg-base))",
+                      color: "rgb(var(--text-3))",
+                      border: "1px solid rgb(var(--border) / 0.06)",
+                    }}
+                  >
+                    +11
+                  </span>
+                </div>
+
+                {/* Divider */}
+                <div
+                  className="my-4 w-full"
+                  style={{ borderTop: "1px dashed rgb(var(--border) / 0.08)" }}
+                />
+
+                {/* ID Number + Email */}
                 <span
-                  className="text-xs"
+                  className="rounded-md px-2.5 py-0.5 text-[9px] font-mono font-semibold uppercase tracking-wider"
+                  style={{
+                    background: "rgb(var(--bg-base))",
+                    color: "rgb(var(--text-3))",
+                    border: "1px solid rgb(var(--border) / 0.06)",
+                  }}
+                >
+                  ID: AR-2026
+                </span>
+                <p
+                  className="mt-2 text-[10px] font-mono"
                   style={{ color: "rgb(var(--text-3))" }}
                 >
                   adityarizkiramadhan2@gmail.com
-                </span>
+                </p>
               </div>
             </div>
           </div>
@@ -265,7 +303,7 @@ export function AboutSection() {
                 style={{ color: "rgb(var(--text-2))" }}
               >
                 I&apos;m an informatics student at Universitas Syiah Kuala who
-                found my way into software through curiosity — tearing apart
+                found my way into software through curiosity, tearing apart
                 websites to see how they worked, then rebuilding them better.
                 What started as tinkering turned into a genuine craft.
               </p>
@@ -284,7 +322,7 @@ export function AboutSection() {
               >
                 Outside of coding, I&apos;m into UI/UX design, machine learning,
                 and finding better ways to explain complex things simply.
-                I&apos;m always learning — currently exploring cloud
+                I&apos;m always learning, currently exploring cloud
                 infrastructure and system design.
               </p>
             </div>

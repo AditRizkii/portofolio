@@ -199,7 +199,11 @@ export function ProjectsSection({ onProjectClick }: ProjectsSectionProps) {
           className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {filteredProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} onClick={() => onProjectClick?.(project)} />
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onClick={() => onProjectClick?.(project)}
+            />
           ))}
         </div>
 

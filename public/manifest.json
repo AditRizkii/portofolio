@@ -1,0 +1,17 @@
+{
+  "name": "Aditya Rizki Ramadhan",
+  "short_name": "Aditya Rizki",
+  "description": "Full Stack Developer & Informatics student. Building full-stack web and mobile experiences.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080810",
+  "theme_color": "#080810",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
