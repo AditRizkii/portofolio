@@ -1,52 +1,35 @@
-"use client";
-
-import { useRef, useEffect } from "react";
-import { gsap } from "gsap";
 import Link from "next/link";
 
 export function Footer() {
-  const ref = useRef<HTMLElement>(null!);
-
-  useEffect(() => {
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (prefersReduced) return;
-
-    const ctx = gsap.context(() => {
-      gsap.from(ref.current, {
-        opacity: 0,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ref.current,
-          start: "top 95%",
-          toggleActions: "play none none none",
-        },
-      });
-    }, ref);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <footer
-      ref={ref}
-      className="border-t border-border"
+      className="border-t py-8"
+      style={{ borderColor: "rgb(var(--border) / 0.06)" }}
     >
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 sm:flex-row lg:px-8">
-        <span className="text-sm font-medium text-text-primary">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 sm:flex-row lg:px-8">
+        <span
+          className="flex items-center gap-2 font-display text-sm font-bold"
+          style={{ color: "rgb(var(--text-1))" }}
+        >
+          <span
+            className="inline-block w-2 h-2 rotate-45"
+            style={{ background: "rgb(var(--accent))" }}
+            aria-hidden="true"
+          />
           Aditya Rizki Ramadhan
         </span>
-        <p className="text-sm text-text-muted">
+        <p className="text-xs" style={{ color: "rgb(var(--text-3))" }}>
           &copy; {new Date().getFullYear()} All rights reserved.
         </p>
-        <div className="flex gap-4">
+        <div className="flex gap-5">
           <Link
             href="https://github.com/AditRizkii"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-text-muted transition-colors hover:text-accent"
+            className="text-xs font-medium transition-colors focus-ring"
+            style={{ color: "rgb(var(--text-3))" }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = "rgb(var(--accent))"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = "rgb(var(--text-3))"; }}
           >
             GitHub
           </Link>
@@ -54,7 +37,10 @@ export function Footer() {
             href="https://www.linkedin.com/in/aditrizkii/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-text-muted transition-colors hover:text-accent"
+            className="text-xs font-medium transition-colors focus-ring"
+            style={{ color: "rgb(var(--text-3))" }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = "rgb(var(--accent))"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = "rgb(var(--text-3))"; }}
           >
             LinkedIn
           </Link>

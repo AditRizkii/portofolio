@@ -1,9 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
 import Link from "next/link";
-import { CodeBracketIcon, EyeIcon } from "@heroicons/react/24/outline";
-import { gsap } from "gsap";
 import type { Project } from "@/types";
 
 interface ProjectCardProps {
@@ -11,96 +8,119 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null!);
-
-  useEffect(() => {
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (prefersReduced) return;
-
-    const ctx = gsap.context(() => {
-      const card = cardRef.current;
-
-      card.addEventListener("mouseenter", () => {
-        gsap.to(card.querySelector(".card-overlay"), {
-          opacity: 1,
-          duration: 0.25,
-          ease: "power2.out",
-        });
-        gsap.to(card.querySelector(".card-actions"), {
-          y: 0,
-          opacity: 1,
-          duration: 0.3,
-          ease: "power2.out",
-          stagger: 0.05,
-        });
-      });
-
-      card.addEventListener("mouseleave", () => {
-        gsap.to(card.querySelector(".card-overlay"), {
-          opacity: 0,
-          duration: 0.25,
-          ease: "power2.out",
-        });
-        gsap.to(card.querySelector(".card-actions"), {
-          y: 10,
-          opacity: 0,
-          duration: 0.2,
-          ease: "power2.in",
-        });
-      });
-    }, cardRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <div ref={cardRef} className="group">
-      <div
-        className="relative h-52 overflow-hidden rounded-t-xl bg-surface-hover md:h-72"
-        style={
-          {
-            "--bg-url": `url(${project.image})`,
-            background: "var(--bg-url)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          } as React.CSSProperties
-        }
-      >
+    <div
+      className="group relative overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-2"
+      style={{
+        background: "rgb(var(--bg-card))",
+        border: "1px solid rgb(var(--border) / 0.08)",
+        boxShadow: "none",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = "rgb(var(--accent) / 0.3)";
+        e.currentTarget.style.boxShadow = "0 20px 60px rgba(0,0,0,0.5)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = "rgb(var(--border) / 0.08)";
+        e.currentTarget.style.boxShadow = "none";
+      }}
+    >
+      {/* Image container */}
+      <div className="relative aspect-video overflow-hidden bg-[rgb(var(--bg-layer))]">
         <div
-          className="card-overlay absolute inset-0 flex items-center justify-center gap-3 bg-gradient-to-t from-bg/90 via-bg/60 to-transparent opacity-0 transition-all duration-300"
-          aria-hidden="true"
+          className="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+          style={{
+            backgroundImage: `url(${project.image})`,
+            filter: "brightness(0.9)",
+          }}
+        />
+
+        {/* Overlay on hover */}
+        <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{ background: "rgba(8,8,16,0.85)" }}
         >
-          {project.gitUrl && project.gitUrl !== "/" && (
-            <Link
-              href={project.gitUrl}
-              className="card-actions flex h-12 w-12 translate-y-2 items-center justify-center rounded-full border border-white/30 text-white opacity-0 transition-colors hover:border-white hover:text-white"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`View ${project.title} source code`}
-            >
-              <CodeBracketIcon className="h-6 w-6" />
-            </Link>
-          )}
           {project.previewUrl && project.previewUrl !== "/" && (
             <Link
               href={project.previewUrl}
-              className="card-actions flex h-12 w-12 translate-y-2 items-center justify-center rounded-full border border-white/30 text-white opacity-0 transition-colors hover:border-white hover:text-white"
+              className="flex h-11 w-11 items-center justify-center rounded-full transition-all duration-200 hover:scale-110 focus-ring"
+              style={{
+                border: "1px solid rgb(var(--border-bright))",
+                background: "rgba(255,255,255,0.08)",
+                color: "rgb(var(--text-1))",
+              }}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Preview ${project.title}`}
             >
-              <EyeIcon className="h-6 w-6" />
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </Link>
+          )}
+          {project.gitUrl && project.gitUrl !== "/" && (
+            <Link
+              href={project.gitUrl}
+              className="flex h-11 w-11 items-center justify-center rounded-full transition-all duration-200 hover:scale-110 focus-ring"
+              style={{
+                border: "1px solid rgb(var(--border-bright))",
+                background: "rgba(255,255,255,0.08)",
+                color: "rgb(var(--text-1))",
+              }}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View ${project.title} source code`}
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+              </svg>
             </Link>
           )}
         </div>
       </div>
-      <div className="rounded-b-xl border-x border-b border-border bg-surface p-5">
-        <h3 className="font-display text-lg font-semibold text-text-primary">
+
+      {/* Content */}
+      <div className="p-5">
+        <span
+          className="inline-block px-2.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider"
+          style={{
+            background: "rgb(var(--accent-dim))",
+            color: "rgb(var(--accent))",
+          }}
+        >
+          {project.tags.find((t) => t !== "All") || "Web"}
+        </span>
+
+        <h3
+          className="mt-2 font-display text-lg font-bold transition-colors group-hover:text-[rgb(var(--accent))]"
+          style={{ color: "rgb(var(--text-1))" }}
+        >
           {project.title}
         </h3>
-        <p className="mt-1 text-sm text-text-muted">{project.description}</p>
+
+        <p
+          className="mt-1 text-sm line-clamp-2"
+          style={{ color: "rgb(var(--text-2))" }}
+        >
+          {project.description}
+        </p>
+
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {project.tech.slice(0, 4).map((t) => (
+            <span
+              key={t}
+              className="inline-block px-2 py-0.5 rounded text-[10px] font-medium"
+              style={{
+                background: "rgb(var(--bg-layer))",
+                border: "1px solid rgb(var(--border) / 0.06)",
+                color: "rgb(var(--text-3))",
+              }}
+            >
+              {t}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );

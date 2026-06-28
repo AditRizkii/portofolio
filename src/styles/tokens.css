@@ -1,0 +1,16 @@
+:root {
+  --bg-base: 8 8 16;
+  --bg-layer: 13 13 26;
+  --bg-card: 17 17 32;
+  --bg-card-hover: 22 22 42;
+  --accent: 123 111 224;
+  --accent-dim: 123 111 224;
+  --accent-glow: 123 111 224;
+  --cyan: 79 195 247;
+  --cyan-dim: 79 195 247;
+  --text-1: 238 238 245;
+  --text-2: 142 142 168;
+  --text-3: 85 85 104;
+  --border: 255 255 255;
+  --border-bright: 255 255 255;
+}

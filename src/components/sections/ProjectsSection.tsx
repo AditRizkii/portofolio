@@ -4,83 +4,90 @@ import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ProjectCard } from "./ProjectCard";
-import { Tag } from "@/components/ui/Tag";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { cn } from "@/lib/utils";
 import type { Project } from "@/types";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const projectsData: Project[] = [
   {
     id: 1,
     title: "DESUS",
-    description: "Depression Diagnose",
+    description: "Depression Diagnose — mental health screening app",
     image: "/images/projects/desus.png",
     tags: ["All", "Web", "Mobile"],
     gitUrl: "https://github.com/AditRizkii/DESUS",
     previewUrl: "/",
+    tech: ["React", "Node.js", "MongoDB"],
   },
   {
     id: 2,
     title: "Manajemen Uang Kas",
-    description: "Website for management kas",
+    description: "Cash management system for organizations",
     image: "/images/projects/uang-kas.png",
     tags: ["All", "Web"],
     gitUrl: "https://github.com/AditRizkii/ManajemenKas-fe",
     previewUrl: "/",
+    tech: ["React", "MySQL", "Node.js"],
   },
   {
     id: 3,
     title: "Flow Pet Clinic",
-    description: "Build Landing page for pet care",
+    description: "Landing page for pet care services",
     image: "/images/projects/petcare.png",
     tags: ["All", "Web", "Mobile"],
     gitUrl: "/",
     previewUrl: "https://flowpetclinic.netlify.app/",
+    tech: ["React", "TailwindCSS"],
   },
   {
     id: 4,
     title: "KreditTepat",
-    description: "Website for analysis worthy for credit card",
+    description: "Credit card eligibility analysis platform",
     image: "/images/projects/kredittepat.png",
     tags: ["All", "Web", "Mobile"],
     gitUrl: "https://github.com/AditRizkii/Sistem-KreditTepat",
     previewUrl: "https://kredittepat.netlify.app/",
+    tech: ["React", "Node.js", "MongoDB"],
   },
   {
     id: 5,
     title: "TrashPorter",
-    description: "Trash Pickup Service",
+    description: "Trash pickup service platform",
     image: "/images/projects/trashporter.png",
     tags: ["All", "Web"],
     gitUrl: "/",
     previewUrl: "/",
+    tech: ["React", "Node.js", "MySQL"],
   },
   {
     id: 6,
-    title: "Wedding Invitation Web",
-    description: "Build wedding invitation website",
+    title: "Wedding Invitation",
+    description: "Digital wedding invitation website",
     image: "/images/projects/undangan.png",
     tags: ["All", "Web", "Mobile"],
     gitUrl: "/",
     previewUrl: "https://humam-rika-invitation-aditrizkii.vercel.app/",
+    tech: ["React", "Next.js"],
   },
   {
     id: 7,
-    title: "Fixing Report Web",
-    description: "Build report template pdf for goverment instance",
+    title: "Fixing Report",
+    description: "PDF report template for government instances",
     image: "/images/projects/laporanperbaikan.png",
     tags: ["All", "Web", "Mobile"],
     gitUrl: "https://github.com/AditRizkii/Laporan-Perbaikan",
-    previewUrl: "https://humam-rika-invitation-aditrizkii.vercel.app/",
+    previewUrl: "/",
+    tech: ["React", "Node.js"],
   },
   {
     id: 8,
     title: "EZFarm App",
-    description: "Build plant disease detection android app",
+    description: "Plant disease detection Android app",
     image: "/images/projects/ezfarm.png",
     tags: ["All", "Mobile"],
     gitUrl: "https://github.com/fakhri-rasyad/capstone_project_ezfarm",
     previewUrl: "/",
+    tech: ["Kotlin", "TensorFlow", "Android"],
   },
 ];
 
@@ -88,33 +95,15 @@ const filterTags = ["All", "Web", "Mobile"] as const;
 
 export function ProjectsSection() {
   const [activeTag, setActiveTag] = useState<string>("All");
-  const [currentPage, setCurrentPage] = useState(1);
-  const gridRef = useRef<HTMLUListElement>(null!);
-  const sectionRef = useScrollReveal<HTMLElement>({ y: 20 });
-
-  const itemsPerPage = 6;
+  const gridRef = useRef<HTMLDivElement>(null!);
+  const sectionRef = useRef<HTMLElement>(null!);
 
   const filteredProjects = projectsData.filter((p) =>
     p.tags.includes(activeTag as Project["tags"][number])
   );
-  const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
-  const currentProjects = filteredProjects.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const handleTagChange = (tag: string) => {
-    setActiveTag(tag);
-    setCurrentPage(1);
-  };
 
   useEffect(() => {
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (prefersReduced) return;
-
-    gsap.registerPlugin(ScrollTrigger);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const ctx = gsap.context(() => {
       gsap.from(gridRef.current.children, {
@@ -123,83 +112,79 @@ export function ProjectsSection() {
           start: "top 85%",
           toggleActions: "play none none none",
         },
-        y: 40,
+        y: 50,
         opacity: 0,
         duration: 0.6,
         stagger: 0.08,
         ease: "power2.out",
-        overwrite: "auto",
       });
     }, gridRef);
 
     return () => ctx.revert();
-  }, [activeTag, currentPage]);
+  }, [activeTag]);
 
   return (
-    <section ref={sectionRef} id="projects" className="py-16 sm:py-24">
+    <section ref={sectionRef} id="projects" className="py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
-        <h2 className="font-display text-3xl font-bold text-text-primary sm:text-4xl">
-          My Projects
-        </h2>
-        <span className="signature-line mt-3" />
-
-        <div className="mt-8 flex flex-wrap gap-3" role="tablist" aria-label="Project filters">
-          {filterTags.map((tag) => (
-            <Tag
-              key={tag}
-              label={tag}
-              selected={activeTag === tag}
-              onClick={() => handleTagChange(tag)}
-            />
-          ))}
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div>
+            <h2
+              className="font-display text-display-2 font-bold"
+              style={{ color: "rgb(var(--text-1))" }}
+            >
+              Selected Work
+            </h2>
+            <p className="mt-1 text-sm" style={{ color: "rgb(var(--text-2))" }}>
+              A curated collection of things I&apos;ve built.
+            </p>
+          </div>
+          <div
+            className="flex gap-5"
+            role="tablist"
+            aria-label="Project filters"
+          >
+            {filterTags.map((tag) => (
+              <button
+                key={tag}
+                role="tab"
+                aria-selected={activeTag === tag}
+                onClick={() => setActiveTag(tag)}
+                className="tab-underline pb-1 text-sm font-medium transition-colors focus-ring"
+                style={{
+                  color:
+                    activeTag === tag
+                      ? "rgb(var(--accent))"
+                      : "rgb(var(--text-2))",
+                }}
+              >
+                {tag}
+                {activeTag === tag && (
+                  <span
+                    className="block h-0.5 mt-0.5"
+                    style={{
+                      background: "rgb(var(--accent))",
+                      transform: "scaleX(1)",
+                    }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <ul
+        <div
           ref={gridRef}
           className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {currentProjects.map((project) => (
-            <li key={project.id}>
-              <ProjectCard project={project} />
-            </li>
+          {filteredProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
           ))}
-        </ul>
+        </div>
 
-        {totalPages > 1 && (
-          <nav
-            className="mt-10 flex items-center justify-center gap-4"
-            aria-label="Project pagination"
-          >
-            <button
-              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              disabled={currentPage === 1}
-              className={cn(
-                "rounded-full border border-border px-5 py-2 text-sm font-medium transition-all focus-ring",
-                currentPage === 1
-                  ? "cursor-not-allowed opacity-40"
-                  : "text-text-primary hover:border-accent hover:text-accent"
-              )}
-            >
-              Previous
-            </button>
-            <span className="text-sm text-text-muted tabular-nums">
-              {currentPage} / {totalPages}
-            </span>
-            <button
-              onClick={() =>
-                setCurrentPage((p) => Math.min(totalPages, p + 1))
-              }
-              disabled={currentPage === totalPages}
-              className={cn(
-                "rounded-full border border-border px-5 py-2 text-sm font-medium transition-all focus-ring",
-                currentPage === totalPages
-                  ? "cursor-not-allowed opacity-40"
-                  : "text-text-primary hover:border-accent hover:text-accent"
-              )}
-            >
-              Next
-            </button>
-          </nav>
+        {filteredProjects.length === 0 && (
+          <p className="mt-16 text-center text-sm" style={{ color: "rgb(var(--text-2))" }}>
+            No projects found for this category.
+          </p>
         )}
       </div>
     </section>
