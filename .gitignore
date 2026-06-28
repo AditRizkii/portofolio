@@ -38,3 +38,7 @@ next-env.d.ts
 /dist
 cc.pem
 deploy.sh
+
+/.opencode/
+/docs
+opencode.json

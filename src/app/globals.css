@@ -2,26 +2,99 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --color-bg: 250 250 250;
+    --color-surface: 255 255 255;
+    --color-surface-hover: 244 244 245;
+    --color-accent: 91 75 214;
+    --color-accent-secondary: 0 153 204;
+    --color-text-primary: 9 9 11;
+    --color-text-muted: 113 113 122;
+    --color-border: 228 228 231;
+  }
+
+  .dark {
+    --color-bg: 9 9 11;
+    --color-surface: 24 24 27;
+    --color-surface-hover: 39 39 42;
+    --color-accent: 108 92 231;
+    --color-accent-secondary: 0 210 255;
+    --color-text-primary: 250 250 250;
+    --color-text-muted: 161 161 170;
+    --color-border: 39 39 42;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg text-text-primary font-body antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
+
+  ::selection {
+    background-color: rgb(var(--color-accent) / 0.3);
+    color: rgb(var(--color-text-primary));
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+  .signature-line {
+    @apply block h-[2px] w-16 rounded-full;
+    background: linear-gradient(
+      to right,
+      rgb(var(--color-accent)),
+      rgb(var(--color-accent-secondary))
+    );
+  }
+
+  .gradient-text {
+    background: linear-gradient(
+      to right,
+      rgb(var(--color-accent)),
+      rgb(var(--color-accent-secondary))
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 6s ease infinite;
+  }
+
+  .glass {
+    background-color: rgb(var(--color-surface) / 0.8);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgb(var(--color-border));
+  }
+
+  .focus-ring {
+    outline: none;
+  }
+
+  .focus-ring:focus-visible {
+    outline: 2px solid rgb(var(--color-accent));
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
