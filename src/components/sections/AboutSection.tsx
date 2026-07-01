@@ -14,13 +14,13 @@ const skills = [
     name: "TypeScript",
     icon: "typescript",
     color: "#3178C6",
-    group: "Frontend",
+    group: "Language",
   },
   {
     name: "JavaScript",
     icon: "javascript",
     color: "#F7DF1E",
-    group: "Frontend",
+    group: "Language",
   },
   {
     name: "TailwindCSS",
@@ -32,14 +32,23 @@ const skills = [
   { name: "CSS3", icon: "css", color: "#1572B6", group: "Frontend" },
   { name: "Node.js", icon: "nodedotjs", color: "#339933", group: "Backend" },
   { name: "Express", icon: "express", color: "#FFFFFF", group: "Backend" },
+  { name: "Laravel", icon: "laravel", color: "#FF2D20", group: "Backend" },
+  { name: "Flask", icon: "flask", color: "#fff", group: "Backend" },
+  { name: "Django", icon: "django", color: "#092E20", group: "Backend" },
+  { name: "FastAPI", icon: "fastapi", color: "#009688", group: "Backend" },
   { name: "MySQL", icon: "mysql", color: "#4479A1", group: "Database" },
   { name: "MongoDB", icon: "mongodb", color: "#47A248", group: "Database" },
-  { name: "Kotlin", icon: "kotlin", color: "#7F52FF", group: "Tools" },
+  { name: "Kotlin", icon: "kotlin", color: "#7F52FF", group: "Language" },
   { name: "Figma", icon: "figma", color: "#F24E1E", group: "Tools" },
   { name: "Git", icon: "git", color: "#F05032", group: "Tools" },
+  { name: "Docker", icon: "docker", color: "#2496ED", group: "Tools" },
+  { name: "PHP", icon: "php", color: "#777BB4", group: "Language" },
+  { name: "Python", icon: "python", color: "#3776AB", group: "Language" },
+  { name: "Java", icon: "java", color: "#007396", group: "Language" },
+  { name: "C", icon: "c", color: "#00599C", group: "Language" },
 ];
 
-const groups = ["Frontend", "Backend", "Database", "Tools"];
+const groups = ["Frontend", "Backend", "Database", "Tools", "Language"];
 
 const educationData = [
   {
@@ -51,6 +60,70 @@ const educationData = [
     school: "BANGKIT 2024 Batch 6",
     major: "Cohort, Cloud Computing",
     period: "2024",
+  },
+];
+
+const experienceData = [
+  {
+    role: "IT Fullstack Developer",
+    company: "PT Paling Kaya Sedunia (Prestisa ID)",
+    period: "Sep. 2025 — Present",
+    desc: "Developed HRIS applications, built employee data and talent management modules, designed RESTful APIs, optimized database queries, and integrated cloud storage and notification systems.",
+    tech: [
+      "React",
+      "TypeScript",
+      "Express",
+      "TypeORM",
+      "MySQL",
+      "Redis",
+      "S3 (RustFs)",
+      "Git",
+      "Agile",
+    ],
+  },
+  {
+    role: "Programmer",
+    company: "PT Klik Data Indonesia",
+    period: "Sep. 2025 — Des. 2025",
+    desc: "Developed and maintained web-based applications, designed backend functionalities, built REST APIs, optimized database queries, and collaborated with project teams.",
+    tech: ["CodeIgniter", "MySQL", "REST APIs"],
+  },
+  {
+    role: "Freelance Fullstack Developer",
+    company: "Freelance",
+    period: "Feb. 2022 — Sep. 2026",
+    desc: "Built and delivered custom web applications (business websites, dashboards, automation tools) based on client requirements, and collaborated with international and local clients.",
+    tech: ["React", "Laravel", "Node.js"],
+  },
+  {
+    role: "Fullstack Web Developer Intern",
+    company: "Stasiun Klimatologi Aceh (BMKG)",
+    period: "Jun. 2024 — Nov. 2024",
+    desc: "Developed 2 internal web applications (Repair Report Generator and Leave Management System) to improve workflow efficiency, reducing manual work by over 60%.",
+    tech: ["Web Development", "PDF Generation", "Automation"],
+  },
+  {
+    role: "Team Leader, Mobile Development Cohort",
+    company: "Bangkit Academy (by Google, GoTO, Traveloka)",
+    period: "Feb. — Jun. 2024",
+    desc: "Completed 900+ hours of training in Android development, integrated AI and Machine Learning models into mobile applications, and led a cross-functional team in a capstone project.",
+    tech: ["Kotlin", "SOLID", "UI/UX", "Android", "AI", "Machine Learning"],
+  },
+  {
+    role: "Teaching Assistant (Lab Assistant)",
+    company: "Syiah Kuala University",
+    period: "Feb. 2023 — Jan. 2024",
+    desc: "Assisted multiple classes with 30 students each in various CS courses, provided guidance in lab sessions, prepared materials, and supported students' understanding of core CS concepts.",
+    tech: [
+      "Database Systems",
+      "OOP",
+      "Numerical Computation",
+      "Web Programming",
+      "Software Architecture",
+      "AI",
+      "Computer Visualization",
+      "Automata Theory",
+    ],
   },
 ];
 
@@ -327,25 +400,27 @@ export function AboutSection() {
               role="tablist"
               aria-label="About sections"
             >
-              {["Skills", "Education", "Certifications"].map((tab) => (
-                <button
-                  key={tab.toLowerCase()}
-                  role="tab"
-                  aria-selected={activeTab === tab.toLowerCase()}
-                  onClick={() => setActiveTab(tab.toLowerCase())}
-                  className={`tab-underline pb-3 text-sm font-medium transition-colors focus-ring ${
-                    activeTab === tab.toLowerCase() ? "active" : ""
-                  }`}
-                  style={{
-                    color:
-                      activeTab === tab.toLowerCase()
-                        ? "rgb(var(--accent))"
-                        : "rgb(var(--text-2))",
-                  }}
-                >
-                  {tab}
-                </button>
-              ))}
+              {["Skills", "Experience", "Education", "Certifications"].map(
+                (tab) => (
+                  <button
+                    key={tab.toLowerCase()}
+                    role="tab"
+                    aria-selected={activeTab === tab.toLowerCase()}
+                    onClick={() => setActiveTab(tab.toLowerCase())}
+                    className={`tab-underline pb-3 text-sm font-medium transition-colors focus-ring ${
+                      activeTab === tab.toLowerCase() ? "active" : ""
+                    }`}
+                    style={{
+                      color:
+                        activeTab === tab.toLowerCase()
+                          ? "rgb(var(--accent))"
+                          : "rgb(var(--text-2))",
+                    }}
+                  >
+                    {tab}
+                  </button>
+                ),
+              )}
             </div>
 
             {/* Tab Content */}
@@ -411,6 +486,64 @@ export function AboutSection() {
                       </div>
                     );
                   })}
+                </div>
+              )}
+
+              {activeTab === "experience" && (
+                <div className="space-y-0">
+                  {experienceData.map((exp, i) => (
+                    <div
+                      key={exp.company + exp.role}
+                      className="relative pl-6 pb-6 last:pb-0"
+                    >
+                      <div className="tl-dot absolute left-0" />
+                      {i < experienceData.length - 1 && (
+                        <div className="tl-line" />
+                      )}
+                      <p
+                        className="font-display text-sm font-bold"
+                        style={{ color: "rgb(var(--accent))" }}
+                      >
+                        {exp.period}
+                      </p>
+                      <p
+                        className="mt-1 font-medium"
+                        style={{ color: "rgb(var(--text-1))" }}
+                      >
+                        {exp.role}
+                      </p>
+                      <p
+                        className="text-sm"
+                        style={{ color: "rgb(var(--text-3))" }}
+                      >
+                        {exp.company}
+                      </p>
+                      {exp.desc && (
+                        <p
+                          className="mt-1 text-sm"
+                          style={{ color: "rgb(var(--text-2))" }}
+                        >
+                          {exp.desc}
+                        </p>
+                      )}
+                      {exp.tech && (
+                        <div className="mt-2 flex flex-wrap gap-1.5">
+                          {exp.tech.map((t) => (
+                            <span
+                              key={t}
+                              className="inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-medium"
+                              style={{
+                                background: "rgb(var(--accent) / 0.08)",
+                                color: "rgb(var(--accent))",
+                              }}
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               )}
 
